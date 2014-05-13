@@ -1,0 +1,34 @@
+- error = @message.errors.key?(:account) && @message.errors[:account].count > 0
+%fieldset.control-group{:class => error ? 'has-error' : ''}
+  =f.label :account, :class => 'control-label'
+  .controls
+    =f.text_field :account, :class => 'form-control input-large input-with-feedback', :autofocus => true, :value => @message.account.name, :disabled => true
+    %span.help-inline=error ? f.error_message_on(:account, :class => 'text-error') : ''
+
+- error = @message.errors.key?(:sender) && @message.errors[:sender].count > 0
+%fieldset.control-group{:class => error ? 'has-error' : ''}
+  =f.label :sender, :class => 'control-label'
+  .controls
+    =f.text_field :sender, :class => 'form-control input-large input-with-feedback', :value => @message.sender.name, :disabled => true
+    %span.help-inline=error ? f.error_message_on(:sender, :class => 'text-error') : ''
+
+- error = @message.errors.key?(:sent_at) && @message.errors[:sent_at].count > 0
+%fieldset.control-group{:class => error ? 'has-error' : ''}
+  =f.label :sent_at, :class => 'control-label'
+  .controls
+    =f.text_field :sent_at, :class => 'form-control input-large input-with-feedback'
+    %span.help-inline=error ? f.error_message_on(:sent_at, :class => 'text-error') : ''
+
+- error = @message.errors.key?(:text) && @message.errors[:text].count > 0
+%fieldset.control-group{:class => error ? 'has-error' : ''}
+  =f.label :text, :class => 'control-label'
+  .controls
+    =f.text_area :text, :class => 'form-control input-large input-with-feedback'
+    %span.help-inline=error ? f.error_message_on(:text, :class => 'text-error') : ''
+
+.form-actions
+  =f.submit pat(:save), :class => 'btn btn-primary'
+  &nbsp;
+  =f.submit pat(:save_and_continue), :class => 'btn btn-info', :name => 'save_and_continue'
+  &nbsp;
+  =link_to pat(:cancel), url(:contacts, :index), :class => 'btn btn-default'

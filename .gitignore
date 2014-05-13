@@ -1,3 +1,7 @@
+## Project Specific
+/tasks/data/import/
+
+## General Ignores
 *.gem
 *.rbc
 /.config
@@ -8,6 +12,10 @@
 /test/tmp/
 /test/version_tmp/
 /tmp/
+/db/*.db
+
+## Specific to RubyMine
+.idea/
 
 ## Specific to RubyMotion:
 .dat*

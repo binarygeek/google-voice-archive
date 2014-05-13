@@ -1,0 +1,54 @@
+%ul.nav.nav-tabs
+  %li.active=link_to tag_icon(:list, pat(:list)), url(:contacts, :index)
+  %li=link_to tag_icon(:plus, pat(:new)), url(:contacts, :new)
+
+.tabs-content
+  %table#list.table.table-striped.table-hover.table-condensed
+    %thead
+      %tr
+        %th.header.list-menu
+          .dropdown
+            %a.list-menu-toggle.dropdown-toggle{:href => '#', :'data-toggle' => :dropdown}
+              =tag_icon :magic
+              %span.caret
+            %ul.list-menu.dropdown-menu{:role => :menu}
+              %li.list-menu-wrapper=link_to tag_icon(:check, pat(:select_all)), '#', :id => 'select-all', :class => 'list-menu-link'
+              %li.list-menu-wrapper.list-menu-wrapper-disabled
+                =link_to tag_icon(:'check-empty', pat(:deselect_all)), '#', :id => 'deselect-all', :class => 'list-menu-link list-menu-link-disabled'
+              %li.list-menu-divider.divider
+              %li.list-menu-wrapper.list-menu-wrapper-disabled
+                =link_to tag_icon(:trash, pat(:delete_selected)), '#', :id => 'delete-selected', :class => 'list-menu-link list-menu-link-disabled'
+                .list-menu-popover-delete-selected.popover.right
+                  .arrow
+                  %h3.popover-title=pat(:delete_selected_title)
+                  .popover-content
+                    -form_tag url(:messages, :destroy_many), :method => :delete do
+                      =hidden_field_tag :contact_ids, :'data-delete-many-ids' => true
+                      =submit_tag pat(:delete), :class =>'list-menu-popover-delete-selected-btn btn btn-danger btn-small'
+                      .btn.btn-default.btn-small.cancel=pat(:cancel)
+        %th.header= mat(:message, :id)
+        %th.header= mat(:message, :sent_at)
+        %th.header= mat(:message, :sender)
+        %th.header= mat(:contact, :text)
+        -#%th.header.list-row-action-header
+
+    %tbody
+      -@messages.each do |message|
+        %tr.list-row
+          %td.list-column.list-selectable
+            =check_box_tag 'message_ids[]', :value => message.id, :class => 'list-selectable-checkbox'
+          %td.list-column=link_to(message.id.to_s, :href => url(:messages, :edit, :id => message.id))
+          %td.list-column{style: 'white-space:nowrap;'}=Time.parse(message.sent_at).getlocal.strftime('%b %d, %Y %l:%M:%S %p')
+          %td.list-column{style: 'white-space:nowrap;'}=message.sender.full_name_or_number()
+          %td.list-column=message.text
+          -#%td.list-column.list-row-action
+            .list-row-action-wrapper
+              =#link_to tag_icon(:edit), :href => url(:contacts, :edit, :id => contact.id), :rel => :tooltip, :title => "#{pat(:edit)} contact", :class => 'list-row-action-wrapper-link'
+              =#link_to tag_icon(:trash), :rel => :tooltip, :title => "#{pat(:delete)} contact", :class => 'list-row-action-delete-one list-row-action-wrapper-link'
+              -#.popover.list-row-action-popover-delete-one.left
+                .arrow
+                %h3.popover-title=pat(:delete, :model => "contact")
+                .popover-content
+                  -form_tag url(:contacts, :destroy, :id => contact.id), :method => :delete do
+                    =submit_tag pat(:delete), :class =>'list-row-action-popover-delete-one-btn btn btn-danger btn-small'
+                    .btn.btn-default.btn-small.cancel=pat(:cancel)

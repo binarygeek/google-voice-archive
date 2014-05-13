@@ -1,0 +1,8 @@
+%ul.nav.nav-tabs
+  %li=link_to tag_icon(:list, pat(:list)), url(:messages, :index)
+  %li=link_to tag_icon(:plus, pat(:new)), url(:messages, :new)
+  %li.active=link_to tag_icon(:edit, pat(:edit)), url(:messages, :edit, :id => @message.id)
+
+.tabs-content
+  -form_for :message, url(:messages, :update, :id => @message.id), :method => :put, :class => 'form-horizontal' do |f|
+    =partial 'messages/form', :locals => { :f => f }
